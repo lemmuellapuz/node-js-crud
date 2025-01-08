@@ -4,13 +4,15 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "serve": "node server.js"
+    "serve": "node --env-file .env server.js",
+    "dev": "node --env-file .env --watch server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "Simple CRUD practice using NodeJS",
   "dependencies": {
-    "express": "^4.21.2"
+    "express": "^4.21.2",
+    "mongoose": "^8.9.3"
   }
 }

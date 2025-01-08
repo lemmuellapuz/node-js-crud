@@ -6,7 +6,7 @@ const port = process.env.APP_PORT || 3000
 const route = require('./src/routes/router');
 
 const helmet = require('helmet'); 
-const ErrorHandler = require('./src/middlewares/ErrorHandler');
+const ErrorHandler = require('./src/middlewares/ErrorHandler.middleware');
 
 //MIDDLEWARES
 app.use(express.json())
@@ -22,7 +22,7 @@ if (!process.env.DB_USERNAME || !process.env.DB_PASSWORD) {
     process.exit(1);
 }
 
-mongoose.connect(`mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@giyacluster.0ppso1o.mongodb.net/?retryWrites=true&w=majority&appName=GiyaCluster`)
+mongoose.connect(`mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@giyacluster.0ppso1o.mongodb.net/node-js-crud?retryWrites=true&w=majority&appName=GiyaCluster`)
 .then(()=>{
     
     app.listen(port, () => {

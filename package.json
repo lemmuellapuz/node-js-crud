@@ -3,11 +3,14 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "serve": "node --env-file .env server.js",
     "dev": "node --env-file .env --watch server.js"
   },
-  "keywords": ["node-js", "crud"],
+  "keywords": [
+    "node-js",
+    "crud"
+  ],
   "author": "Lemmuel Lapuz",
   "license": "ISC",
   "description": "Simple CRUD practice using NodeJS",
@@ -17,5 +20,8 @@
     "helmet": "^8.0.0",
     "joi": "^17.13.3",
     "mongoose": "^8.9.3"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
   }
 }

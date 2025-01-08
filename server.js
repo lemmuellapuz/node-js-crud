@@ -6,16 +6,18 @@ const port = process.env.APP_PORT || 3000
 const route = require('./src/routes/router');
 
 const helmet = require('helmet'); 
-const ErrorHandler = require('./src/middlewares/ErrorHandler.middleware');
+const limiter = require('./src/middlewares/RateLimiter.middleware'); 
+const errorHandler = require('./src/middlewares/ErrorHandler.middleware');
 
 //MIDDLEWARES
 app.use(express.json())
 app.use(helmet());
+app.use(limiter)
 
 //ROUTES
 app.use('/api/v1', route)
 
-app.use(ErrorHandler);
+app.use(errorHandler);
 
 if (!process.env.DB_USERNAME || !process.env.DB_PASSWORD) {
     console.error("Missing required environment variables: DB_USERNAME or DB_PASSWORD");

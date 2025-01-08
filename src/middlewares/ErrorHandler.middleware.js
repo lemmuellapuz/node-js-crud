@@ -1,4 +1,4 @@
-const ErrorHandler = (err, req, res, next) => {
+const errorHandler = (err, req, res, next) => {
     
     const statusCode = res.statusCode !== 200 ? res.statusCode : 500;
     res.statusCode = statusCode;
@@ -12,4 +12,4 @@ const ErrorHandler = (err, req, res, next) => {
     res.json(responseBody)
 }
 
-module.exports = ErrorHandler;
+module.exports = errorHandler;

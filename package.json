@@ -7,8 +7,8 @@
     "serve": "node --env-file .env server.js",
     "dev": "node --env-file .env --watch server.js"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["node-js", "crud"],
+  "author": "Lemmuel Lapuz",
   "license": "ISC",
   "description": "Simple CRUD practice using NodeJS",
   "dependencies": {

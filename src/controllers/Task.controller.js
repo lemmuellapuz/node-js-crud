@@ -1,14 +1,13 @@
 const Task = require('../models/Task.model');
+const { paginate } = require('../utils/Helper.utils')
 
 const index = async (req, res) => {
     try {
-        console.log(req.body);
-        
-        const tasks = await Task.find({})
+        const tasks = await paginate(Task, 1, 3, {})
         res.status(200).json(tasks);
 
     } catch (error) {
-        console.log(error);
+        throw new Error(error);
         
     }
 }
@@ -17,6 +16,12 @@ const show = async (req, res) => {
     try {
         const {taskid} = req.params
         const task = await Task.findById(taskid)
+
+        if(!task)
+            res.status(404).json({
+                status: 'Error',
+                message: 'Resource not found'
+            })
 
         res.status(200).json(task);
 
@@ -28,7 +33,7 @@ const show = async (req, res) => {
 const store = async (req, res) => {
     try {
 
-        const task = await Task.create(req.body + {status: false})
+        const task = await Task.create({ ...req.body, status: false })
 
         res.status(200).send({
             status: 'Success',

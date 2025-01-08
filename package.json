@@ -13,6 +13,8 @@
   "description": "Simple CRUD practice using NodeJS",
   "dependencies": {
     "express": "^4.21.2",
+    "helmet": "^8.0.0",
+    "joi": "^17.13.3",
     "mongoose": "^8.9.3"
   }
 }

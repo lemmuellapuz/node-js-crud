@@ -3,13 +3,19 @@ const express = require('express')
 const app = express()
 const port = process.env.APP_PORT || 3000
 
-const task = require('./routes/task');
+const route = require('./src/routes/router');
 
-app.use('/task', task)
+const helmet = require('helmet'); 
+const ErrorHandler = require('./src/middlewares/ErrorHandler');
 
-app.get('/', (req, res) => {
-    res.send('Hello World!')
-})
+//MIDDLEWARES
+app.use(express.json())
+app.use(helmet());
+
+//ROUTES
+app.use('/api/v1', route)
+
+app.use(ErrorHandler);
 
 if (!process.env.DB_USERNAME || !process.env.DB_PASSWORD) {
     console.error("Missing required environment variables: DB_USERNAME or DB_PASSWORD");
@@ -25,5 +31,5 @@ mongoose.connect(`mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASS
     
 })
 .catch((error) => {
-    console.log(error);
+    throw new Error(error);
 })

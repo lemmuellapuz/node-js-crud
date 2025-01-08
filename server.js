@@ -5,14 +5,16 @@ const port = process.env.APP_PORT || 3000
 
 const route = require('./src/routes/router');
 
-const helmet = require('helmet'); 
+const helmet = require('helmet');
 const limiter = require('./src/middlewares/RateLimiter.middleware'); 
 const errorHandler = require('./src/middlewares/ErrorHandler.middleware');
+const sanitizeRequest = require('./src/middlewares/SanitizeRequest.middleware');
 
 //MIDDLEWARES
 app.use(express.json())
 app.use(helmet());
-app.use(limiter)
+app.use(limiter);
+app.use(sanitizeRequest);
 
 //ROUTES
 app.use('/api/v1', route)

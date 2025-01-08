@@ -2,6 +2,7 @@ const Task = require('../models/Task.model');
 
 const index = async (req, res) => {
     try {
+        console.log(req.body);
         
         const tasks = await Task.find({})
         res.status(200).json(tasks);

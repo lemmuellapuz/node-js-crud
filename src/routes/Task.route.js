@@ -4,7 +4,7 @@ const TaskController = require('../controllers/Task.controller');
 
 const validateRequest = require('../middlewares/ValidateRequest.middleware')
 
-const schema = require('../validations/task/TaskSchema');
+const schema = require('../validations/task/TaskSchema.validation');
 
 router.get('/', TaskController.index);
 

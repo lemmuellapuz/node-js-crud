@@ -1,10 +1,12 @@
 const express = require('express');
 const router = express.Router();
+const { authenticated } = require('../middlewares/Authentication.middleware');
+
 const TaskController = require('../controllers/Task.controller');
-
-const validateRequest = require('../middlewares/ValidateRequest.middleware')
-
+const validateRequest = require('../middlewares/ValidateRequest.middleware');
 const schema = require('../validations/task/TaskSchema.validation');
+
+router.use(authenticated);
 
 router.get('/', TaskController.index);
 

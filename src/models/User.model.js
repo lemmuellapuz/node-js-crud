@@ -19,11 +19,28 @@ const UserSchema = mongoose.Schema({
     }
 });
 
+//HASHING PASSWORD AFTER CREATING NEW USER 
 UserSchema.pre('save', async function(next){
     const salt = await bcrypt.genSalt();
     this.password = await bcrypt.hash(this.password, salt);
     next();
 })
+
+UserSchema.statics.login = async (email, password) => {
+
+    const user = await User.findOne({email: email});
+
+    if(!user)
+        throw new Error('Invalid credentials')
+
+    const auth = await bcrypt.compare(password, user.password);
+
+    if(!auth)
+        throw new Error('Invalid credentials')
+
+    return user;
+
+}
 
 /** @type {mongoose.Model} */
 const User = mongoose.model('User', UserSchema);

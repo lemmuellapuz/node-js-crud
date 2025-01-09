@@ -1,7 +1,7 @@
 const Task = require('../models/Task.model');
 const { paginate } = require('../utils/Helper.utils')
 
-const index = async (req, res) => {
+const index = async (req, res, next) => {
     try {
         const {page, limit} = req.query;
         
@@ -9,12 +9,11 @@ const index = async (req, res) => {
         res.status(200).json(tasks);
 
     } catch (error) {
-        throw new Error(error);
-        
+        next(error);
     }
 }
 
-const show = async (req, res) => {
+const show = async (req, res, next) => {
     try {
         const {taskid} = req.params
         const task = await Task.findById(taskid)
@@ -28,11 +27,11 @@ const show = async (req, res) => {
         res.status(200).json(task);
 
     } catch (error) {
-        throw new Error(error);
+        next(error);
     }
 }
 
-const store = async (req, res) => {
+const store = async (req, res, next) => {
     try {
 
         const task = await Task.create({ ...req.body, status: false })
@@ -44,11 +43,11 @@ const store = async (req, res) => {
         });
 
     } catch (error) {
-        throw new Error(error);
+        next(error);
     }
 }
 
-const update = async (req, res) => {
+const update = async (req, res, next) => {
     try {
 
         const {taskid} = req.params;
@@ -67,11 +66,11 @@ const update = async (req, res) => {
         });
 
     } catch (error) {
-        throw new Error(error);
+        next(error);
     }
 }
 
-const destroy = async (req, res) => {
+const destroy = async (req, res, next) => {
     try {
         const {taskid} = req.params;
         const task = await Task.findByIdAndDelete(taskid);
@@ -89,7 +88,7 @@ const destroy = async (req, res) => {
         });
 
     } catch (error) {
-        throw new Error(error);
+        next(error);
     }
 }
 

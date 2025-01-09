@@ -1,4 +1,6 @@
 const Joi = require('joi');
+const { joiPasswordExtendCore } = require('joi-password');
+const joiPassword = Joi.extend(joiPasswordExtendCore);
 
 const signupSchema = Joi.object({
     name: Joi.string()
@@ -7,10 +9,17 @@ const signupSchema = Joi.object({
     email: Joi.string()
         .email({ minDomainSegments: 2 })
         .required(),
-    password: Joi.string()
-        .minLength(6)
-        .maxLength(32)
-        .pattern(new RegExp('^[a-zA-Z0-9]{3,30}$'))
+    password: joiPassword
+        .string()
+        .min(6)
+        .max(32)
+        .minOfSpecialCharacters(1)
+        .minOfLowercase(1)
+        .minOfUppercase(1)
+        .minOfNumeric(1)
+        .noWhiteSpaces()
+        .onlyLatinCharacters()
+        .doesNotInclude(['password'])
         .required(),
     password_confirmation: Joi.ref('password')
 }).with('password', 'password_confirmation')

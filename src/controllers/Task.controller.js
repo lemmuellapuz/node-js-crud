@@ -36,7 +36,7 @@ const store = async (req, res, next) => {
 
         const task = await Task.create({ ...req.body, status: false })
 
-        res.status(200).send({
+        res.status(201).send({
             status: 'Success',
             message: 'Task created',
             data: task

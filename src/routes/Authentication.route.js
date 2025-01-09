@@ -8,6 +8,6 @@ const schema = require('../validations/authentication/AuthenticationSchema.valid
 router.post('/signup', validateRequest(schema.signupSchema), controller.signup);
 router.post('/signin', validateRequest(schema.signinSchema), controller.signin);
 router.post('/forgot-password', validateRequest(schema.forgotPasswordSchema), () => {});
-router.get('/logout', () => {});
+router.get('/signout', controller.signout);
 
 module.exports = router;

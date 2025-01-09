@@ -50,7 +50,18 @@ const signin = async (req, res, next) => {
     }
 }
 
+const signout = async (req, res, next) => {
+    try {
+        res.cookie('jwt', '', { maxAge: 1 });
+        res.status(200).send('Signed out');
+
+    } catch (error) {
+        next(error);
+    }
+}
+
 module.exports = {
     signup,
-    signin
+    signin,
+    signout
 }

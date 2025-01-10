@@ -9,10 +9,11 @@ exports.authenticated = async (req, res, next) => {
     if(!token)
         next(new Error('Unauthorized access'));
     
-    jsonwebtoken.verify(token, TOKEN.secret_key, (error) => {
+    jsonwebtoken.verify(token, TOKEN.secret_key, (error, decoded) => {
         if(error)
             next(error);
 
+        req.user = decoded.user_id
         next();
     })
 

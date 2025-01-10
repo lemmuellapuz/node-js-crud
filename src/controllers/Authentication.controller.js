@@ -1,59 +1,81 @@
 const User = require('../models/User.model');
 const tokenService = require('../services/Token.services');
-const { TOKEN } = require('../config/token.config')
+const { TOKEN } = require('../config/token.config');
+const mongoose = require('mongoose');
 
 const signup = async (req, res, next) => {
+
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
     try {
 
-        const user = await User.create(req.body)
-        const token = tokenService.createToken(user._id)
+        const user = await User.create([req.body], { session })
+        const tokens = await tokenService.createTokens(req, user[0]._id, session);
 
-        res
-            .cookie('jwt', token, {
-                httpOnly: true,
-                maxAge: TOKEN.expires_in
-            })
-            .status(201)
+        await session.commitTransaction();
+
+        res.cookie('jwt', tokens.refresh_token, { httpOnly: true, maxAge: TOKEN.expires_in });
+
+        res.status(201)
             .json({
                 status: 'Success',
                 message: 'User created',
                 data: {
-                    user: user._id
+                    access_token: tokens.access_token,
+                    user: user[0]._id
                 }
             });
 
     } catch (error) {
+        await session.abortTransaction();
         next(error);
+    } finally {
+        session.endSession();
     }
 }
 
 const signin = async (req, res, next) => {
+
+    const session = await mongoose.startSession()
+    session.startTransaction()
+
     try {
         const { email, password } = req.body;
 
         const user = await User.login(email, password)
-        const token = tokenService.createToken(user._id)
-        res
-            .cookie('jwt', token, {
-                httpOnly: true,
-                maxAge: TOKEN.expires_in
-            })
-            .status(200)
+        const tokens = await tokenService.createTokens(req, user._id, session);
+
+        await session.commitTransaction();
+
+        res.cookie('jwt', tokens.refresh_token, { httpOnly: true, maxAge: TOKEN.expires_in });
+
+        res.status(200)
             .json({
-                data: {
-                    user: user._id
-                }
+                access_token: tokens.access_token,
+                user: user._id
             });
 
     } catch (error) {
         next(error);
+        session.abortTransaction();
+    } finally {
+        session.endSession();
     }
 }
 
 const signout = async (req, res, next) => {
     try {
-        res.cookie('jwt', '', { maxAge: 1 });
-        res.status(200).send('Signed out');
+        const userId = req.user;
+        if(userId)
+            await tokenService.revokeToken(userId);
+        
+        res.clearCookie('jwt', { maxAge: 1 });
+
+        res.status(200).json({
+            status: 'Success',
+            message: 'Signed out successfully'
+        });
 
     } catch (error) {
         next(error);

@@ -5,7 +5,7 @@ const index = async (req, res, next) => {
     try {
         const {page, limit} = req.query;
         
-        const tasks = await paginate(Task, page, limit, {})
+        const tasks = await paginate(Task, {}, page, limit)
         res.status(200).json(tasks);
 
     } catch (error) {

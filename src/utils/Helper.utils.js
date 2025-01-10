@@ -7,7 +7,7 @@
  * @param {object} [filter={}] - The filter object for querying (default: empty object)
  * @returns {Promise<object>} - An object containing pagination results
  */
-exports.paginate = async (model, page=1, limit=10, filter) => {
+exports.paginate = async (model, filter, page=1, limit=10) => {
     
     const skip = (page - 1) * limit;
 

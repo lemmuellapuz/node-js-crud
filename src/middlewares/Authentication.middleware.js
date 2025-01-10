@@ -4,10 +4,7 @@ const User = require('../models/User.model');
 
 exports.authenticated = async (req, res, next) => {
 
-    const token = req.cookie?.jwt || req.headers['authorization']?.split(' ')[1];
-    
-    console.log('YEY HEADERS', req.headers);
-    
+    const token = req.cookies?.jwt || req.headers['authorization']?.split(' ')[1];
 
     if(!token)
         next(new Error('Unauthorized access'));

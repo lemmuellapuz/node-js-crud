@@ -3,7 +3,8 @@ const { paginate } = require('../utils/Helper.utils')
 
 const index = async (req, res, next) => {
     try {
-        const {page, limit} = req.query;
+        const page = parseInt(req.query.page, 10) || 1;
+        const limit = parseInt(req.query.limit, 10) || 10;
         
         const tasks = await paginate(Task, {}, page, limit)
         res.status(200).json(tasks);

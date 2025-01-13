@@ -15,6 +15,7 @@ const signup = async (req, res, next) => {
 
         await session.commitTransaction();
 
+        req.user = user[0]._id;
         res.cookie('jwt', tokens.refresh_token, { httpOnly: true, maxAge: TOKEN.expires_in });
 
         res.status(201)
@@ -48,6 +49,7 @@ const signin = async (req, res, next) => {
 
         await session.commitTransaction();
 
+        req.user = user._id;
         res.cookie('jwt', tokens.refresh_token, { httpOnly: true, maxAge: TOKEN.expires_in });
 
         res.status(200)
@@ -67,10 +69,12 @@ const signin = async (req, res, next) => {
 const signout = async (req, res, next) => {
     try {
         const userId = req.user;
+        console.log(req);
+        
         if(userId)
             await tokenService.revokeToken(userId);
         
-        res.clearCookie('jwt', { maxAge: 1 });
+        res.clearCookie('jwt');
 
         res.status(200).json({
             status: 'Success',
